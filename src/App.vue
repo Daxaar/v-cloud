@@ -9,7 +9,8 @@
         flat
         to="/login"
       >
-        <span class="mr-2">Login</span>
+        <span class="mr-2">{{LoginText}} ({{failCount}})
+        </span>
       </v-btn>
     </v-toolbar>
 
@@ -20,17 +21,24 @@
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld'
+//import HelloWorld from './components/HelloWorld'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
   },
   data () {
     return {
-      //
+      LoginButtonText: this.$store.state.user == null ? "Login" : "Logout"
     }
-  }
+  },
+   computed: {
+     failCount(){
+       return this.$store.state.failedLoginAttempts;
+     },
+     LoginText(){
+       return this.$store.state.user == null ? "Login" : "Logout";
+     }
+   }
 }
 </script>
