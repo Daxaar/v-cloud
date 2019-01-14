@@ -4,7 +4,7 @@
       <v-flex xs12 sm8 md4>
         <v-card class="elevation-12">
           <v-toolbar dark color="primary">
-            <v-toolbar-title>Login form</v-toolbar-title>
+            <v-toolbar-title>Login</v-toolbar-title>
             <v-spacer></v-spacer>
             <v-tooltip bottom></v-tooltip>
           </v-toolbar>
@@ -46,20 +46,22 @@
 export default {
   data() {
     return {
-      username: null,
-      password: null,
+      username: "darren",
+      password: "password",
       loginFailedText: "Login Failed",
       loginFailed: false
     };
   },
   methods: {
     login() {
-      console.log("login");
+        //TODO: Hook up oidc
       if (this.username == "darren" && this.password == "password") {
+        localStorage.setItem("token", "fake_token");
         this.$store.commit("CREATE_USER", {
           fullName: "Darren Lewis",
           isAdmin: true
         });
+        // User has successfully logged in so redirect them to where they were originally trying to get to
         this.$router.push(this.$route.query.nextUrl || "/");
       } else {
         this.loginFailed = true;

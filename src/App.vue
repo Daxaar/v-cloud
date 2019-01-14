@@ -5,12 +5,8 @@
         <router-link to="/">v-Cloud</router-link>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn
-        flat
-        to="/login"
-      >
-        <span class="mr-2">{{LoginText}} ({{failCount}})
-        </span>
+      <v-btn flat to="/login">
+        <span class="mr-2">{{LoginText}} ({{failCount}})</span>
       </v-btn>
     </v-toolbar>
 
@@ -24,21 +20,28 @@
 //import HelloWorld from './components/HelloWorld'
 
 export default {
-  name: 'App',
-  components: {
-  },
-  data () {
+  name: "App",
+  components: {},
+  data() {
     return {
       LoginButtonText: this.$store.state.user == null ? "Login" : "Logout"
-    }
+    };
   },
-   computed: {
-     failCount(){
-       return this.$store.state.failedLoginAttempts;
-     },
-     LoginText(){
-       return this.$store.state.user == null ? "Login" : "Logout";
-     }
-   }
-}
+  created() {
+      // Load data from API as required
+      // Load authenticated user from localStorage into state
+      this.$store.commit("CREATE_USER", {
+          fullName: "Darren Lewis",
+          isAdmin: true
+        });
+  },
+  computed: {
+    failCount() {
+      return this.$store.state.failedLoginAttempts;
+    },
+    LoginText() {
+      return this.$store.state.user == null ? "Login" : "Logout";
+    }
+  }
+};
 </script>
