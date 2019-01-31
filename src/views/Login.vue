@@ -1,7 +1,7 @@
 <template>
   <v-container fluid fill-height>
     <v-layout align-center justify-center>
-      <v-flex xs12 sm8 md4>
+      <v-flex xs12 sm8 md8>
         <v-card class="elevation-12">
           <v-toolbar dark color="primary">
             <v-toolbar-title>Login</v-toolbar-title>
@@ -9,7 +9,7 @@
             <v-tooltip bottom></v-tooltip>
           </v-toolbar>
           <v-card-text>
-            <v-form>
+            <v-form @submit.prevent="login()">
               <v-text-field
                 prepend-icon="person"
                 v-model="username"
@@ -25,12 +25,12 @@
                 id="password"
                 type="password"
               ></v-text-field>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="primary" type="submit">Login</v-btn>
+              </v-card-actions>
             </v-form>
           </v-card-text>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="primary" @keyup.enter="login()" @click="login()">Login</v-btn>
-          </v-card-actions>
         </v-card>
       </v-flex>
     </v-layout>
@@ -43,6 +43,8 @@
 </template>
 
 <script>
+import { mapMutations, mapGetters } from "vuex";
+
 export default {
   data() {
     return {
@@ -54,10 +56,8 @@ export default {
   },
   methods: {
     login() {
-        //TODO: Hook up oidc
       if (this.username == "darren" && this.password == "password") {
-        localStorage.setItem("token", "fake_token");
-        this.$store.commit("CREATE_USER", {
+        this.$store.commit("login", {
           fullName: "Darren Lewis",
           isAdmin: true
         });
@@ -65,7 +65,6 @@ export default {
         this.$router.push(this.$route.query.nextUrl || "/");
       } else {
         this.loginFailed = true;
-        this.$store.state.failedLoginAttempts++;
       }
     }
   }

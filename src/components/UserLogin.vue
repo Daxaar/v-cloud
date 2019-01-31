@@ -1,26 +1,29 @@
 <template>
-  <v-btn flat to="/login">
-    <span class="mr-2">{{LoginText}} ({{failedLoginAttempts}})</span>
+  <v-btn flat @click="login()">
+    <span class="mr-2">{{LoginText}}</span>
   </v-btn>
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapMutations, mapGetters } from "vuex";
 
 export default {
   name: "UserLogin",
-  created() {
-    // Load data from API as required
-    // Load authenticated user from localStorage into state
-    this.$store.commit("CREATE_USER", {
-      fullName: "Darren Lewis",
-      isAdmin: true
-    });
-  },
   computed: {
-    ...mapState(["failedLoginAttempts", "user"]),
-    LoginText() {
-      return this.user == null ? "Login" : "Logout";
+      ...mapGetters(['userIsLoggedIn']),
+      LoginText() {
+          return this.userIsLoggedIn ? "Logout" : "Login";
+      }
+  },
+  methods: {
+    ...mapMutations(["logout"]),
+    login() {
+      if (localStorage.getItem("token")) {
+        this.logout();
+        this.$router.push('/home');
+      } else {
+        this.$router.push("/login");
+      }
     }
   }
 };
